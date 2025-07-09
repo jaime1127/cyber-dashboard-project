@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Globe from "react-globe.gl";
 import * as THREE from "three";
+import type { GlobeMethods } from "react-globe.gl";
 
 // Country label data with lat/lng
 const labelsData = [
@@ -14,8 +15,7 @@ const labelsData = [
 ];
 
 export default function DayNightGlobe() {
-  const globeEl = useRef<any>(null);
-
+  const globeEl = useRef<GlobeMethods | undefined>(undefined);
   useEffect(() => {
     if (!globeEl.current) return;
 
@@ -36,7 +36,9 @@ export default function DayNightGlobe() {
         })
       );
       clouds.name = "clouds";
-      globeEl.current.scene().add(clouds);
+      if (globeEl.current) {
+        globeEl.current.scene().add(clouds);
+      }
     });
 
     // Cleanup
