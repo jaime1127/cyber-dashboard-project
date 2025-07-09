@@ -1,8 +1,6 @@
 CREATE DATABASE IF NOT EXISTS jr_dev_dashboard;
 USE jr_dev_dashboard;
 
-
-
 CREATE TABLE malware (
     id INT AUTO_INCREMENT PRIMARY KEY,
     category VARCHAR(100),
