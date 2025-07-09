@@ -22,7 +22,6 @@ export default function DayNightGlobe() {
     // Auto-rotate
     globeEl.current.controls().autoRotate = true;
     globeEl.current.controls().autoRotateSpeed = 0.4;
-    globeEl.current.controls().getDistance;
 
     // Add clouds
     const CLOUDS_IMG_URL =
@@ -46,8 +45,6 @@ export default function DayNightGlobe() {
         const scene = globeEl.current.scene();
         const clouds = scene.getObjectByName("clouds");
         if (clouds) scene.remove(clouds);
-        const nightSide = scene.getObjectByName("nightSide");
-        if (nightSide) scene.remove(nightSide);
       }
     };
   }, []);

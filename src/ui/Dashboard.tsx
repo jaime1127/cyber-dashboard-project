@@ -5,10 +5,6 @@ import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
   TransitionChild,
 } from "@headlessui/react";
 import {
@@ -20,11 +16,7 @@ import {
   SignalIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import {
-  Bars3Icon,
-  ChevronUpDownIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/20/solid";
+
 import GlobeClientWrapper from "./Globe/GlobeWrapper";
 
 const navigation = [
@@ -174,26 +166,11 @@ export default function Example() {
           </div>
         </div>
 
-        <div className="xl:pl-72">
-          {/* Sticky search header */}
-          <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-6 border-b border-white/5 bg-black px-4 shadow-xs sm:px-6 lg:px-8">
-            <button
-              type="button"
-              onClick={() => setSidebarOpen(true)}
-              className="-m-2.5 p-2.5 text-white xl:hidden"
-            >
-              <span className="sr-only">Open sidebar</span>
-              <Bars3Icon aria-hidden="true" className="size-5" />
-            </button>
-
-      
-          </div>
-
-          <main className="lg:pr-96">
-            
+        
+          <main className="lg:pr-96 xl:pl-72">
             <GlobeClientWrapper />
             {/* Activity feed */}
-            <aside className="backdrop-blur-sm bg-white/10 lg:fixed lg:top-16 lg:right-0 lg:bottom-0 lg:w-96 lg:overflow-y-auto lg:border-l lg:border-white/5 shadow-lg">
+            <aside className="backdrop-blur-sm bg-white/10 lg:fixed lg:top-0 lg:right-0 lg:bottom-0 lg:w-96 lg:overflow-y-auto lg:border-l lg:border-white/5 shadow-lg">
               <header className="flex items-center justify-between border-b border-white/5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
                 <h2 className="text-base/7 font-semibold text-white">
                   Activity feed
@@ -236,7 +213,6 @@ export default function Example() {
             </aside>
           </main>
         </div>
-      </div>
     </>
   );
 }
