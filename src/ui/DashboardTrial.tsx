@@ -8,17 +8,20 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import {
+  Bars3Icon,
+  FolderIcon,
+  XMarkIcon,
   ChartBarSquareIcon,
   Cog6ToothIcon,
-  FolderIcon,
   GlobeAltIcon,
   ServerIcon,
   SignalIcon,
-  XMarkIcon,
 } from "@heroicons/react/24/outline";
 
 import GlobeClientWrapper from "./Globe/GlobeWrapper";
 import Stats from "./Globe/Stats";
+import Link from "next/link";
+import Image from "next/image";
 
 const navigation = [
   { name: "Attacks By Country", href: "#", icon: FolderIcon, current: false },
@@ -38,7 +41,7 @@ export default function Dashboard() {
         <Dialog
           open={sidebarOpen}
           onClose={setSidebarOpen}
-          className="relative z-50 xl:hidden"
+          className="relative z-50 lg:hidden"
         >
           <DialogBackdrop
             transition
@@ -67,12 +70,14 @@ export default function Dashboard() {
               </TransitionChild>
 
               {/* Sidebar component, swap this element with another sidebar if you like */}
-              <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-#000000; px-6 ring-1 ring-white/10 shadow-lg">
+              <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-black px-6 ring-1 ring-white/10 shadow-lg">
                 <div className="flex h-16 shrink-0 items-center">
-                  <img
+                  <Image
                     alt="Your Company"
-                    src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
+                    src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
                     className="h-8 w-auto"
+                    height={32}
+                    width={32}
                   />
                 </div>
                 <nav className="flex flex-1 flex-col">
@@ -81,7 +86,7 @@ export default function Dashboard() {
                       <ul role="list" className="-mx-2 space-y-1">
                         {navigation.map((item) => (
                           <li key={item.name}>
-                            <a
+                            <Link
                               href={item.href}
                               className={
                                 (item.current
@@ -95,7 +100,7 @@ export default function Dashboard() {
                                 className="size-6 shrink-0"
                               />
                               {item.name}
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -108,14 +113,16 @@ export default function Dashboard() {
         </Dialog>
 
         {/* Static sidebar for desktop */}
-        <div className="xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-96 xl:flex-col bg-#000000; backdrop-blur-sm bg-white/10 shadow-lg">
+        <div className="hidden lg:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-96 lg:flex-col bg-#000000; backdrop-blur-sm  shadow-lg">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-black/10 px-6 ring-1 ring-white/5">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r bg-#000000 px-6">
             <div className="flex h-16 shrink-0 items-center">
-              <img
+              <Image
                 alt="Your Company"
-                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
+                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
                 className="h-8 w-auto"
+                height={32}
+                width={32}
               />
             </div>
             <nav className="flex flex-1 flex-col">
@@ -124,7 +131,7 @@ export default function Dashboard() {
                   <ul role="list" className="-mx-2 space-y-1">
                     {navigation.map((item) => (
                       <li key={item.name}>
-                        <a
+                        <Link
                           href={item.href}
                           className={
                             (item.current
@@ -138,7 +145,7 @@ export default function Dashboard() {
                             className="size-6 shrink-0"
                           />
                           {item.name}
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -148,19 +155,34 @@ export default function Dashboard() {
           </div>
         </div>
 
+        <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-black px-4 py-4 shadow-xs sm:px-6 xl:hidden">
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(true)}
+            className="-m-2.5 p-2.5 text-white"
+          >
+            <span className="sr-only">Open sidebar</span>
+            <Bars3Icon aria-hidden="true" className="size-6" />
+          </button>
+          <div className="flex-1 text-sm/6 font-semibold text-white">
+            Dashboard
+          </div>
+        </div>
+
         <main>
           <GlobeClientWrapper />
-          {/* Activity feed */}
-          <aside className="backdrop-blur-sm bg-white/10 lg:fixed lg:top-0 lg:right-0 lg:bottom-0 lg:w-96 lg:overflow-y-auto lg:border-l lg:border-white/5 shadow-lg">
+          <aside className="backdrop-blur-sm bg-white/10 xl:fixed xl:top-0 xl:right-0 xl:bottom-0 xl:w-96 overflow-y-auto lg:border-l lg:border-white/5 shadow-lg">
             <header className="flex items-center justify-between border-b border-white/5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
               <h2 className="text-base/7 font-semibold text-white">
                 Attacks by Country
               </h2>
-              <a href="#" className="text-sm/6 font-semibold text-indigo-400">
+              <Link
+                href="#"
+                className="text-sm/6 font-semibold text-indigo-400"
+              >
                 View all
-              </a>
+              </Link>
             </header>
-
             <Stats />
           </aside>
         </main>

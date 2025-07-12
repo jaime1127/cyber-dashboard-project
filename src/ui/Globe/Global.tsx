@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Globe from "react-globe.gl";
 import * as THREE from "three";
-import type { GlobeMethods } from "react-globe.gl";
 
 // Country label data with lat/lng
 const labelsData = [
@@ -15,13 +14,38 @@ const labelsData = [
 ];
 
 export default function DayNightGlobe() {
-  const globeEl = useRef<GlobeMethods | undefined>(undefined);
+  const globeEl = useRef<any>(null);
+  const [containerRef, { width, height }] = useContainerSize();
+
+  // Responsive container size hook
+  function useContainerSize() {
+    const ref = useRef<HTMLDivElement>(null);
+    const [size, setSize] = useState({ width: 300, height: 300 });
+
+    useEffect(() => {
+      function updateSize() {
+        if (ref.current) {
+          setSize({
+            width: ref.current.offsetWidth,
+            height: ref.current.offsetHeight,
+          });
+        }
+      }
+      updateSize();
+      window.addEventListener("resize", updateSize);
+      return () => window.removeEventListener("resize", updateSize);
+    }, []);
+
+    return [ref, size] as const;
+  }
+
   useEffect(() => {
     if (!globeEl.current) return;
 
     // Auto-rotate
     globeEl.current.controls().autoRotate = true;
     globeEl.current.controls().autoRotateSpeed = 0.4;
+    globeEl.current.controls().enableZoom = false;
 
     // Add clouds
     const CLOUDS_IMG_URL =
@@ -52,16 +76,14 @@ export default function DayNightGlobe() {
   }, []);
 
   return (
-    <div className="w-full h-full">
+    <div ref={containerRef} className="w-full h-lvh">
       <Globe
         ref={globeEl}
-        width={1400}
-        height={1000}
+        width={width}
+        height={height}
         globeImageUrl="https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
         bumpImageUrl="https://unpkg.com/three-globe/example/img/earth-topology.png"
-        backgroundImageUrl={
-          "https://unpkg.com/three-globe/example/img/night-sky.png"
-        }
+        backgroundImageUrl="https://unpkg.com/three-globe/example/img/night-sky.png"
         backgroundColor="#000011"
         labelsData={labelsData}
         labelColor={() => "#FFA500"}

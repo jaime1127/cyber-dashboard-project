@@ -1,12 +1,11 @@
-import Dashboard from "../ui/Dashboard";
-// import { getAllData } from "./lib/data";
-
-// const data = await getAllData();
+import DashboardTrial from "@/ui/DashboardTrial";
+// import Dashboard from "../ui/Dashboard";
 
 export default function Page() {
   return (
     <main>
-      <Dashboard />
+      {/* <Dashboard /> */}
+      <DashboardTrial />
     </main>
   );
 }
