@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Globe from "react-globe.gl";
+import Globe, { GlobeMethods } from "react-globe.gl";
 import * as THREE from "three";
 
 // Country label data with lat/lng
@@ -14,7 +14,7 @@ const labelsData = [
 ];
 
 export default function DayNightGlobe() {
-  const globeEl = useRef<any>(null);
+  const globeEl = useRef<GlobeMethods | undefined>(undefined);
   const [containerRef, { width, height }] = useContainerSize();
 
   // Responsive container size hook
