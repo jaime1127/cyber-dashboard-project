@@ -69,7 +69,6 @@ export default function Dashboard() {
                 </div>
               </TransitionChild>
 
-              {/* Sidebar component, swap this element with another sidebar if you like */}
               <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-black px-6 ring-1 ring-white/10 shadow-lg">
                 <div className="flex h-16 shrink-0 items-center">
                   <Image
@@ -114,7 +113,6 @@ export default function Dashboard() {
 
         {/* Static sidebar for desktop */}
         <div className="hidden lg:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-96 lg:flex-col bg-#000000; backdrop-blur-sm  shadow-lg">
-          {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r bg-#000000 px-6">
             <div className="flex h-16 shrink-0 items-center">
               <Image

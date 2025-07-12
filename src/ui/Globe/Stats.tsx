@@ -4,8 +4,18 @@ import { useEffect, useState } from "react";
 import { getAllData } from "../../app/lib/data";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
+type AttackCountry = {
+  country: string;
+  day: number;
+  hour: number;
+};
+
+type StatsData = {
+  attacks_by_country: AttackCountry[];
+};
+
 export default function Stats() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<StatsData | null>(null);
 
   useEffect(() => {
     getAllData().then(setData);
@@ -36,7 +46,7 @@ export default function Stats() {
               Attacked on {convertHourToDateOnly(data.day)}
             </div>
             <div className="w-full flex-none text-1xl/10 font-medium tracking-tight text-gray-50">
-             Time {convertHourToDateOnly(data.hour)}
+              Time {convertHourToDateOnly(data.hour)}
             </div>
           </div>
         </div>
