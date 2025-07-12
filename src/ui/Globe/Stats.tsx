@@ -31,7 +31,7 @@ export default function Stats() {
 
   return (
     <main>
-      {data.attacks_by_country.map((data: any) => (
+      {data.attacks_by_country.map((data: AttackCountry) => (
         <div key={data.country}>
           <div className="flex flex-row gap-4 p-4">
             <ExclamationTriangleIcon className="h-6 w-6 text-red-600" />
