@@ -1,9 +1,6 @@
-import Dashboard from "../ui/Dashboard";
-
 export default function Page() {
-  return (
-    <main>
-      <Dashboard />
-    </main>
-  );
+  return <main>
+    <p>Total Attacks By Alert</p>
+   
+  </main>;
 }

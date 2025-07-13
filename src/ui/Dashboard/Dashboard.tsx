@@ -1,38 +1,40 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import {
   Bars3Icon,
   FolderIcon,
   XMarkIcon,
   ChartBarSquareIcon,
-  Cog6ToothIcon,
   GlobeAltIcon,
   ServerIcon,
   SignalIcon,
 } from "@heroicons/react/24/outline";
 
-import GlobeClientWrapper from "./Globe/GlobeWrapper";
-import Stats from "./Globe/Stats";
+import GlobeClientWrapper from "../Globe/GlobeWrapper";
+import Attack_By_Login from "../Attack_By_Login/AttackByLogin";
 import Link from "next/link";
 import Image from "next/image";
 
 const navigation = [
-  { name: "Attacks By Country", href: "#", icon: FolderIcon, current: false },
-  { name: "Failed User Logins", href: "#", icon: ServerIcon, current: true },
-  { name: "General", href: "#", icon: SignalIcon, current: false },
-  { name: "users_mfa ", href: "#", icon: GlobeAltIcon, current: false },
-  { name: "Email", href: "#", icon: ChartBarSquareIcon, current: false },
-  { name: "Malware", href: "#", icon: Cog6ToothIcon, current: false },
+  { name: "General", href: "/general", icon: SignalIcon },
+  { name: "Attacks By Country", href: "/attacks-by-country", icon: FolderIcon },
+  { name: "Failed User Logins", href: "/failed-logins", icon: ServerIcon },
+  { name: "Users MFA", href: "/users-mfa", icon: GlobeAltIcon },
+  { name: "Email", href: "/email", icon: ChartBarSquareIcon },
+  { name: "Malware", href: "/malware", icon: ChartBarSquareIcon },
 ];
 
-export default function Dashboard() {
+export default function Dashboard({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <>
-      <div>
+      <main>
+        {/* Mobile sidebar */}
         <Dialog
           open={sidebarOpen}
           onClose={setSidebarOpen}
@@ -50,13 +52,16 @@ export default function Dashboard() {
             >
               <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-black px-6 ring-1 ring-white/10 shadow-lg">
                 <div className="flex h-16 shrink-0 items-center justify-between w-full">
-                  <Image
-                    alt="Your Company"
-                    src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                    className="h-8 w-auto"
-                    height={32}
-                    width={32}
-                  />
+                  <Link href={"/"}>
+                    <Image
+                      alt="Your Company"
+                      src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+                      className="h-8 w-auto"
+                      height={32}
+                      width={32}
+                    />
+                  </Link>
+
                   <button
                     type="button"
                     onClick={() => setSidebarOpen(false)}
@@ -77,7 +82,7 @@ export default function Dashboard() {
                             <Link
                               href={item.href}
                               className={
-                                (item.current
+                                (pathname === item.href
                                   ? "bg-gray-800 text-white"
                                   : "text-gray-400 hover:bg-gray-800 hover:text-white") +
                                 " group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
@@ -99,18 +104,19 @@ export default function Dashboard() {
             </DialogPanel>
           </div>
         </Dialog>
-
         {/* Static sidebar for desktop */}
-        <div className="hidden lg:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-96 lg:flex-col bg-#000000; backdrop-blur-sm  shadow-lg">
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r bg-#000000 px-6">
+        <div className="hidden lg:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-96 xl:bottom-60 lg:flex-col bg-black backdrop-blur-sm bg-white/10 shadow-lg">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r bg-black px-6">
             <div className="flex h-16 shrink-0 items-center">
-              <Image
-                alt="Your Company"
-                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                className="h-8 w-auto"
-                height={32}
-                width={32}
-              />
+              <Link href={"/"}>
+                <Image
+                  alt="Your Company"
+                  src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+                  className="h-8 w-auto"
+                  height={32}
+                  width={32}
+                />
+              </Link>
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -121,7 +127,7 @@ export default function Dashboard() {
                         <Link
                           href={item.href}
                           className={
-                            (item.current
+                            (pathname === item.href
                               ? "bg-gray-800 text-white"
                               : "text-gray-400 hover:bg-gray-800 hover:text-white") +
                             " group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
@@ -141,8 +147,7 @@ export default function Dashboard() {
             </nav>
           </div>
         </div>
-
-        <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-black px-4 py-4 shadow-xs sm:px-6 xl:hidden">
+        <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-black px-4 py-4 shadow-xs sm:px-6 xl:hidden ring-1 ring-white/10">
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
@@ -155,25 +160,27 @@ export default function Dashboard() {
             Dashboard
           </div>
         </div>
+        <GlobeClientWrapper />
 
-        <main>
-          <GlobeClientWrapper />
-          <aside className="backdrop-blur-sm bg-white/10 xl:fixed xl:top-0 xl:right-0 xl:bottom-0 xl:w-96 overflow-y-auto lg:border-l lg:border-white/5 shadow-lg">
-            <header className="flex items-center justify-between border-b border-white/5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
-              <h2 className="text-base/7 font-semibold text-white">
-                Attacks by Country
-              </h2>
-              <Link
-                href="#"
-                className="text-sm/6 font-semibold text-indigo-400"
-              >
-                View all
-              </Link>
-            </header>
-            <Stats />
-          </aside>
-        </main>
-      </div>
+        {/* Right aside */}
+        <aside className="backdrop-blur-sm bg-white/10 xl:fixed xl:top-0 xl:right-0 xl:bottom-56 xl:w-96 overflow-y-auto lg:border-l lg:border-white/5 shadow-lg">
+          <header className="flex items-center justify-between border-b border-white/5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+            <h2 className="text-base/7 font-semibold text-white">
+              Attacks by Country
+            </h2>
+            <Link href="#" className="text-sm/6 font-semibold text-indigo-400">
+              View all
+            </Link>
+          </header>
+          <Attack_By_Login />
+        </aside>
+
+      
+        {/* Bottom aside */}
+        <aside className="backdrop-blur-sm bg-white/10 xl:fixed xl:left-0 xl:right-0 xl:bottom-0 xl:h-60 lg:border-t lg:border-white/5 shadow-lg flex flex-col items-center">
+          {children}
+        </aside>
+      </main>
     </>
   );
 }

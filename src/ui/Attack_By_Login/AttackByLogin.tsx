@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getAllData } from "../../app/lib/data";
+import { getAttacksByCountry } from "../../app/lib/data";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
 type AttackCountry = {
@@ -14,11 +14,13 @@ type StatsData = {
   attacks_by_country: AttackCountry[];
 };
 
-export default function Stats() {
+export default function Attack_By_Login() {
   const [data, setData] = useState<StatsData | null>(null);
 
   useEffect(() => {
-    getAllData().then(setData);
+    getAttacksByCountry().then((attacks) =>
+      setData({ attacks_by_country: attacks })
+    );
   }, []);
 
   if (!data) return <div>Loading...</div>;
@@ -33,14 +35,14 @@ export default function Stats() {
     <main>
       {data.attacks_by_country.map((data: AttackCountry) => (
         <div key={data.country}>
-          <div className="flex flex-row gap-4 p-4">
+          <div className="flex flex-row gap-4 p-4 overflow-y-auto border-b border-white/5">
             <ExclamationTriangleIcon className="h-6 w-6 text-red-600" />
-            <p className="text-md text-gray-50 ">Warning</p>
+            <p className="text-md text-gray-50 ">Danger</p>
           </div>
 
-          <div className="flex flex-col items-center justify-center p-4 rounded-lg shadow-lg  bg-white/5">
-            <div className="text-md  text-gray-50 font-urbanist">
-              {data.country}
+          <div className="flex flex-col justify-center p-4 rounded-lg shadow-lg bg-white/5 items-start border-b border-white/5">
+            <div className="text-md  text-gray-50 ">
+              Country: {data.country.toUpperCase()}
             </div>
             <div className="w-full flex-none text-1xl/10 font-medium tracking-tight text-gray-50">
               Attacked on {convertHourToDateOnly(data.day)}

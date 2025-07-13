@@ -90,6 +90,7 @@ export default function DayNightGlobe() {
         labelSize={2}
         labelDotRadius={2}
         labelAltitude={0.01}
+        globeOffset={[0, -100]}
       />
     </div>
   );
