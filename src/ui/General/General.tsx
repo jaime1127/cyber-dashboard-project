@@ -12,24 +12,25 @@ type GeneralItem = {
 };
 
 export default function General() {
-  const [data, setData] = useState<GeneralItem[] | null>(null);
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstanceRef = useRef<Chart | null>(null);
+  const [generalItems, setGeneralItems] = useState<GeneralItem[]>([]);
 
   useEffect(() => {
-    getGeneral().then(setData);
+    getGeneral().then((items) => {
+      setGeneralItems(items);
+    });
   }, []);
 
   useEffect(() => {
-    console.log("Data for General Overview:", data);
-    if (data && chartRef.current) {
+    if (generalItems.length > 0 && chartRef.current) {
       // Destroy previous chart instance if exists
       if (chartInstanceRef.current) {
         chartInstanceRef.current.destroy();
       }
 
-      const values = data.map((item: GeneralItem) => item.threat_count);
-      const labels = data.map((item: GeneralItem) => item.category);
+      const values = generalItems.map((item: GeneralItem) => item.threat_count);
+      const labels = generalItems.map((item: GeneralItem) => item.category);
 
       chartInstanceRef.current = new Chart(chartRef.current, {
         type: "bar",
@@ -74,7 +75,7 @@ export default function General() {
         chartInstanceRef.current = null;
       }
     };
-  }, [data]);
+  }, [generalItems]);
 
   return (
     <main className="flex flex-col items-center justify-center h-full w-full">
