@@ -7,8 +7,8 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   return (
-    <main>
-      <FailedLogins/>
+    <main className="h-full w-full flex items-center justify-center">
+      <FailedLogins />
     </main>
   );
 }
