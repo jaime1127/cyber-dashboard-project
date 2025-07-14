@@ -1,6 +1,5 @@
+import General from "../ui/General/General";
+
 export default function Page() {
-  return <main>
-    <p>Total Attacks By Alert</p>
-   
-  </main>;
+  return <General />;
 }

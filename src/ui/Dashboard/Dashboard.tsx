@@ -42,7 +42,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
         >
           <DialogBackdrop
             transition
-            className="fixed inset-0 backdrop-blur-sm bg-white/10 transition-opacity duration-300 ease-linear data-closed:opacity-0"
+            className="fixed inset-0 transition-opacity duration-300 ease-linear data-closed:opacity-0 backdrop-blur-sm bg-white/10"
           />
 
           <div className="fixed inset-0 flex">
@@ -105,8 +105,8 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
           </div>
         </Dialog>
         {/* Static sidebar for desktop */}
-        <div className="hidden lg:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-96 xl:bottom-60 lg:flex-col bg-black backdrop-blur-sm bg-white/10 shadow-lg">
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r bg-black px-6">
+        <div className="hidden lg:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-96 xl:bottom-60 lg:flex-col backdrop-blur-sm bg-white/10 shadow-lg lg:border-white/5">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r px-6 ">
             <div className="flex h-16 shrink-0 items-center">
               <Link href={"/"}>
                 <Image
@@ -163,21 +163,12 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
         <GlobeClientWrapper />
 
         {/* Right aside */}
-        <aside className="backdrop-blur-sm bg-white/10 xl:fixed xl:top-0 xl:right-0 xl:bottom-56 xl:w-96 overflow-y-auto lg:border-l lg:border-white/5 shadow-lg">
-          <header className="flex items-center justify-between border-b border-white/5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
-            <h2 className="text-base/7 font-semibold text-white">
-              Attacks by Country
-            </h2>
-            <Link href="#" className="text-sm/6 font-semibold text-indigo-400">
-              View all
-            </Link>
-          </header>
+        <aside className="xl:fixed xl:top-0 xl:right-0 xl:bottom-60 xl:w-96 overflow-y-auto lg:border-l lg:border-white/5 shadow-lg backdrop-blur-sm bg-white/10">
           <Attack_By_Login />
         </aside>
 
-      
         {/* Bottom aside */}
-        <aside className="backdrop-blur-sm bg-white/10 xl:fixed xl:left-0 xl:right-0 xl:bottom-0 xl:h-60 lg:border-t lg:border-white/5 shadow-lg flex flex-col items-center">
+        <aside className=" xl:fixed xl:left-0 xl:right-0 xl:bottom-0 xl:h-60 lg:border-t lg:border-white/5  flex flex-col items-center shadow-lg backdrop-blur-sm bg-white/10">
           {children}
         </aside>
       </main>
