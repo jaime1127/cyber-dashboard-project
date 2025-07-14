@@ -1,21 +1,48 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import Globe, { GlobeMethods } from "react-globe.gl";
 import * as THREE from "three";
 
-// Country label data with lat/lng
-const labelsData = [
-  { id: 1, country: "china", lat: 35.8617, lng: 104.1954, text: "China" },
-  { id: 2, country: "russia", lat: 61.524, lng: 105.3188, text: "Russia" },
-  { id: 3, country: "india", lat: 20.5937, lng: 78.9629, text: "India" },
-  { id: 4, country: "germany", lat: 51.1657, lng: 10.4515, text: "Germany" },
-  { id: 5, country: "pakistan", lat: 30.3753, lng: 69.3451, text: "Pakistan" },
-];
+function debounce<T extends (...args: unknown[]) => void>(func: T, wait: number): T {
+  let timeout: NodeJS.Timeout;
+  return function (...args: Parameters<T>) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  } as T;
+}
 
 export default function DayNightGlobe() {
   const globeEl = useRef<GlobeMethods | undefined>(undefined);
   const [containerRef, { width, height }] = useContainerSize();
+
+  // Country label data with lat/lng
+  const labelsData = useMemo(
+    () => [
+      { id: 1, country: "china", lat: 35.8617, lng: 104.1954, text: "China" },
+      { id: 2, country: "russia", lat: 61.524, lng: 105.3188, text: "Russia" },
+      { id: 3, country: "india", lat: 20.5937, lng: 78.9629, text: "India" },
+      {
+        id: 4,
+        country: "germany",
+        lat: 51.1657,
+        lng: 10.4515,
+        text: "Germany",
+      },
+      {
+        id: 5,
+        country: "pakistan",
+        lat: 30.3753,
+        lng: 69.3451,
+        text: "Pakistan",
+      },
+    ],
+    []
+  );
 
   // Responsive container size hook
   function useContainerSize() {
@@ -23,29 +50,35 @@ export default function DayNightGlobe() {
     const [size, setSize] = useState({ width: 300, height: 300 });
 
     useEffect(() => {
-      function updateSize() {
+      const updateSize = () => {
         if (ref.current) {
           setSize({
             width: ref.current.offsetWidth,
             height: ref.current.offsetHeight,
           });
         }
-      }
+      };
+
+      const debounceUpdateSize = debounce(updateSize, 200);
       updateSize();
-      window.addEventListener("resize", updateSize);
-      return () => window.removeEventListener("resize", updateSize);
+      window.addEventListener("resize", debounceUpdateSize);
+      return () => window.removeEventListener("resize", debounceUpdateSize);
     }, []);
 
     return [ref, size] as const;
   }
 
   useEffect(() => {
-    if (!globeEl.current) return;
+    const currentGlobeEl = globeEl.current;
+    if (!currentGlobeEl) return;
 
     // Auto-rotate
-    globeEl.current.controls().autoRotate = true;
-    globeEl.current.controls().autoRotateSpeed = 0.4;
-    globeEl.current.controls().enableZoom = false;
+    const controls = currentGlobeEl.controls();
+    if (controls) {
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 0.4;
+      controls.enableZoom = false;
+    }
 
     // Add clouds
     const CLOUDS_IMG_URL =
@@ -60,15 +93,13 @@ export default function DayNightGlobe() {
         })
       );
       clouds.name = "clouds";
-      if (globeEl.current) {
-        globeEl.current.scene().add(clouds);
-      }
+      currentGlobeEl.scene().add(clouds);
     });
 
     // Cleanup
     return () => {
-      if (globeEl.current) {
-        const scene = globeEl.current.scene();
+      if (currentGlobeEl) {
+        const scene = currentGlobeEl.scene();
         const clouds = scene.getObjectByName("clouds");
         if (clouds) scene.remove(clouds);
       }
