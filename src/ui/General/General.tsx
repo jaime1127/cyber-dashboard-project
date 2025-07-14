@@ -28,8 +28,8 @@ export default function General() {
         chartInstanceRef.current.destroy();
       }
 
-      const values = data.map((item: any) => item.threat_count);
-      const labels = data.map((item: any) => item.category);
+      const values = data.map((item: GeneralItem) => item.threat_count);
+      const labels = data.map((item: GeneralItem) => item.category);
 
       chartInstanceRef.current = new Chart(chartRef.current, {
         type: "bar",
