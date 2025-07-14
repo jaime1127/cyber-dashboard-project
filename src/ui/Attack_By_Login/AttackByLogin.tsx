@@ -53,7 +53,10 @@ export default function Attack_By_Login() {
         date, and time. Use this data to spot global threat patterns and
         high-risk areas.
       </div>
-      <ul role="list" className="divide-y divide-gray-200">
+      <ul
+        role="list"
+        className="divide-y divide-gray-200"
+      >
         {data.attacks_by_country.map((data: AttackCountry) => {
           const FlagIcon = flagMap[data.country];
           return (

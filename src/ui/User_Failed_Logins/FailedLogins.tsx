@@ -6,20 +6,31 @@ import { useEffect, useRef, useState } from "react";
 
 Chart.register(...registerables);
 
+type FailedLoginItem = {
+  category: string;
+  threat_count: number;
+};
+
+type FailedLoginData = {
+  failed_logins: FailedLoginItem[];
+};
+
 export default function Failed() {
-  const [data, setData] = useState<any | null>(null);
+  const [data, setData] = useState<FailedLoginData | null>(null);
   const chartRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    getUserFailLogin().then(setData);
+    getUserFailLogin().then((failed_logins) => setData({ failed_logins }));
   }, []);
-
-  console.log(data);
 
   useEffect(() => {
     if (data && chartRef.current) {
-      const labels = data.failed_logins.map((item: any) => item.category);
-      const values = data.failed_logins.map((item: any) => item.threat_count);
+      const labels = data.failed_logins.map(
+        (item: FailedLoginItem) => item.category
+      );
+      const values = data.failed_logins.map(
+        (item: FailedLoginItem) => item.threat_count
+      );
 
       new Chart(chartRef.current, {
         type: "line",

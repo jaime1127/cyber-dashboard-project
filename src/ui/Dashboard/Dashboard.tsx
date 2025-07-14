@@ -5,12 +5,10 @@ import { usePathname } from "next/navigation";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import {
   Bars3Icon,
-  FolderIcon,
   XMarkIcon,
   ChartBarSquareIcon,
   GlobeAltIcon,
   ServerIcon,
-  SignalIcon,
 } from "@heroicons/react/24/outline";
 
 import GlobeClientWrapper from "../Globe/GlobeWrapper";
@@ -19,8 +17,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 const navigation = [
-  { name: "General", href: "/general", icon: SignalIcon },
-  { name: "Attacks By Country", href: "/attacks-by-country", icon: FolderIcon },
   { name: "Failed User Logins", href: "/failed-logins", icon: ServerIcon },
   { name: "Users MFA", href: "/users-mfa", icon: GlobeAltIcon },
   { name: "Email", href: "/email", icon: ChartBarSquareIcon },

@@ -6,14 +6,13 @@ import { useEffect, useRef, useState } from "react";
 
 Chart.register(...registerables);
 
-const labelMap: Record<string, string> = {
-  missing_patches: "Missing Patches",
-  login_30_days: "Logins (30 Days)",
-  firewall_blocks: "Firewall Blocks",
+type GeneralItem = {
+  category: string;
+  threat_count: number;
 };
 
 export default function General() {
-  const [data, setData] = useState<any | null>(null);
+  const [data, setData] = useState<GeneralItem[] | null>(null);
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstanceRef = useRef<Chart | null>(null);
 
@@ -79,7 +78,7 @@ export default function General() {
 
   return (
     <main className="flex flex-col items-center justify-center h-full w-full">
-      <div className="w-full h-full flex flex-row bg-white/5 rounded-lg shadow-lg overflow-hidden divide-x divide-gray-200">
+      <div className="w-full h-full flex flex-col lg:flex-row bg-white/5 rounded-lg shadow-lg overflow-hidden divide-x divide-gray-200">
         <div className="px-4 py-5 sm:px-6 flex flex-col justify-center">
           <p className="text-base/7 font-semibold text-white">
             General Overview
@@ -89,7 +88,7 @@ export default function General() {
           </p>
         </div>
         <div className="flex-1 flex items-center  px-4 py-5 sm:p-6 h-full">
-          <div className="w-1/3 h-full">
+          <div className="w-full lg:w-1/3 h-full">
             <canvas ref={chartRef} className="w-full h-full" />
           </div>
         </div>
