@@ -34,3 +34,43 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Stack Used
+
+- **Framework**: Next.js
+- **Styling**: TailwindCSS
+- **Database**: MySQL
+- **Charting Library**: Chart.js
+- **Interactive Globe**: Three.js (optional, for Attack by Country visualization)
+
+## Setup Instructions
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   ```
+
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+
+3. Start the development server:
+   ```bash
+   pnpm dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser to view the dashboard.
+
+## Design Notes
+
+- **MVC Architecture**: The project follows the Model → Controller → API Route → View flow.
+- **Modern UI Trends**: The dashboard uses a clean and responsive design with TailwindCSS.
+- **Interactive Elements**: Charts are implemented using Chart.js, and an optional globe visualization is powered by Three.js.
+- **Data Handling**: Each table in the database is represented as a model, with routes for data fetching.
+- **Creativity**: Hover effects, transitions, and a consistent color palette enhance the user experience.
+
+## Contact Info
+
+For any questions, please contact:
+- **Email**: pfjaime@yahoo.com

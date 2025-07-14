@@ -6,17 +6,13 @@ import { useEffect, useRef, useState } from "react";
 
 Chart.register(...registerables);
 
-type Dates = {
+type FailedLoginItem = {
+  username: string;
   jan: number;
   feb: number;
   mar: number;
   apr: number;
   may: number;
-};
-
-type FailedLoginItem = {
-  username: string;
-  dates: Dates;
 };
 
 type FailedLoginData = {
@@ -57,69 +53,68 @@ export default function Failed() {
   }, []);
 
   useEffect(() => {
-  if (data && chartRef.current) {
-    console.log("Failed logins data:", data.failed_logins); // Debugging log
+    if (data && chartRef.current) {
+      // Extract labels (months) from the first item in the data
+      const labels = ["Jan", "Feb", "Mar", "Apr", "May"];
 
-    // Extract labels (months) from the first item in the data
-    const labels = ["Jan", "Feb", "Mar", "Apr", "May"];
+      // Define a list of colors for datasets
+      const colors = [
+        {
+          background: "rgba(255, 99, 132, 0.2)",
+          border: "rgba(255, 99, 132, 1)",
+        },
+        {
+          background: "rgba(54, 162, 235, 0.2)",
+          border: "rgba(54, 162, 235, 1)",
+        },
+        {
+          background: "rgba(255, 206, 86, 0.2)",
+          border: "rgba(255, 206, 86, 1)",
+        },
+        {
+          background: "rgba(75, 192, 192, 0.2)",
+          border: "rgba(75, 192, 192, 1)",
+        },
+      ];
 
-    // Define a list of colors for datasets
-    const colors = [
-      {
-        background: "rgba(255, 99, 132, 0.2)",
-        border: "rgba(255, 99, 132, 1)",
-      },
-      {
-        background: "rgba(54, 162, 235, 0.2)",
-        border: "rgba(54, 162, 235, 1)",
-      },
-      {
-        background: "rgba(255, 206, 86, 0.2)",
-        border: "rgba(255, 206, 86, 1)",
-      },
-      {
-        background: "rgba(75, 192, 192, 0.2)",
-        border: "rgba(75, 192, 192, 1)",
-      },
-    ];
+      // Extract datasets for each user
+      const datasets = data.failed_logins.map(
+        (item: FailedLoginItem, index) => {
+          return {
+            label: item.username,
+            data: [
+              item?.jan || 0,
+              item?.feb || 0,
+              item?.mar || 0,
+              item?.apr || 0,
+              item?.may || 0,
+            ],
+            backgroundColor: colors[index % colors.length].background, // Assign background color
+            borderColor: colors[index % colors.length].border, // Assign border color
+            borderWidth: 2,
+          };
+        }
+      );
 
-    // Extract datasets for each user
-    const datasets = data.failed_logins.map((item: FailedLoginItem, index) => {
-      console.log(`Processing user: ${item.username}`, item.dates); // Debugging log
-      return {
-        label: item.username,
-        data: [
-          item.dates?.jan || 0,
-          item.dates?.feb || 0,
-          item.dates?.mar || 0,
-          item.dates?.apr || 0,
-          item.dates?.may || 0,
-        ],
-        backgroundColor: colors[index % colors.length].background, // Assign background color
-        borderColor: colors[index % colors.length].border, // Assign border color
-        borderWidth: 2,
-      };
-    });
-
-    new Chart(chartRef.current, {
-      type: "line",
-      data: {
-        labels, // Months as labels
-        datasets, // User data as datasets
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: true },
-          title: {
-            display: true,
-            text: "User Failed Logins",
+      new Chart(chartRef.current, {
+        type: "line",
+        data: {
+          labels, // Months as labels
+          datasets, // User data as datasets
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: true },
+            title: {
+              display: true,
+              text: "User Failed Logins",
+            },
           },
         },
-      },
-    });
-  }
-}, [data]);
+      });
+    }
+  }, [data]);
 
   return (
     <div className="flex flex-col lg:flex-row gap-4 w-full h-full">
