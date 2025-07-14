@@ -45,6 +45,7 @@ const insightsData: Array<{ type: string; insight: string }> = [
 export default function Failed() {
   const [data, setData] = useState<FailedLoginData | null>(null);
   const chartRef = useRef<HTMLCanvasElement>(null);
+  const chartInstanceRef = useRef<Chart | null>(null); // Reference to the chart instance
 
   useEffect(() => {
     getUserFailLogin().then((result) => {
@@ -54,6 +55,11 @@ export default function Failed() {
 
   useEffect(() => {
     if (data && chartRef.current) {
+      // Destroy the previous chart instance if it exists
+      if (chartInstanceRef.current) {
+        chartInstanceRef.current.destroy();
+      }
+
       // Extract labels (months) from the first item in the data
       const labels = ["Jan", "Feb", "Mar", "Apr", "May"];
 
@@ -78,25 +84,22 @@ export default function Failed() {
       ];
 
       // Extract datasets for each user
-      const datasets = data.failed_logins.map(
-        (item: FailedLoginItem, index) => {
-          return {
-            label: item.username,
-            data: [
-              item?.jan || 0,
-              item?.feb || 0,
-              item?.mar || 0,
-              item?.apr || 0,
-              item?.may || 0,
-            ],
-            backgroundColor: colors[index % colors.length].background, // Assign background color
-            borderColor: colors[index % colors.length].border, // Assign border color
-            borderWidth: 2,
-          };
-        }
-      );
+      const datasets = data.failed_logins.map((item: FailedLoginItem, index) => ({
+        label: item.username,
+        data: [
+          item?.jan || 0,
+          item?.feb || 0,
+          item?.mar || 0,
+          item?.apr || 0,
+          item?.may || 0,
+        ],
+        backgroundColor: colors[index % colors.length].background, // Assign background color
+        borderColor: colors[index % colors.length].border, // Assign border color
+        borderWidth: 2,
+      }));
 
-      new Chart(chartRef.current, {
+      // Create a new chart instance
+      chartInstanceRef.current = new Chart(chartRef.current, {
         type: "line",
         data: {
           labels, // Months as labels
