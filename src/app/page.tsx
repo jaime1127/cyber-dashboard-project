@@ -22,7 +22,7 @@ export default function Page() {
           <General />
         </div>
       )}
-      : ({DynamicComponent && <DynamicComponent />})
+      {DynamicComponent && <DynamicComponent />}
     </div>
   );
 }

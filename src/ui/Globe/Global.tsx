@@ -4,7 +4,10 @@ import { useEffect, useRef, useState, useMemo } from "react";
 import Globe, { GlobeMethods } from "react-globe.gl";
 import * as THREE from "three";
 
-function debounce<T extends (...args: unknown[]) => void>(func: T, wait: number): T {
+function debounce<T extends (...args: unknown[]) => void>(
+  func: T,
+  wait: number
+): T {
   let timeout: NodeJS.Timeout;
   return function (...args: Parameters<T>) {
     const later = () => {
@@ -19,8 +22,8 @@ function debounce<T extends (...args: unknown[]) => void>(func: T, wait: number)
 export default function DayNightGlobe() {
   const globeEl = useRef<GlobeMethods | undefined>(undefined);
   const [containerRef, { width, height }] = useContainerSize();
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
 
-  // Country label data with lat/lng
   const labelsData = useMemo(
     () => [
       { id: 1, country: "china", lat: 35.8617, lng: 104.1954, text: "China" },
@@ -42,6 +45,17 @@ export default function DayNightGlobe() {
       },
     ],
     []
+  );
+
+  const arcsData = useMemo(
+    () =>
+      labelsData.map((label) => ({
+        startLat: label.lat,
+        startLng: label.lng,
+        endLat: 27.9506,
+        endLng: -82.4572,
+      })),
+    [labelsData]
   );
 
   // Responsive container size hook
@@ -106,6 +120,22 @@ export default function DayNightGlobe() {
     };
   }, []);
 
+  const handleLabelClick = (
+    label: object,
+    event: MouseEvent,
+    coords: { lat: number; lng: number; altitude: number }
+  ) => {
+    // Type assertion to access label properties
+    const countryLabel = label as {
+      id: number;
+      country: string;
+      lat: number;
+      lng: number;
+      text: string;
+    };
+    setSelectedCountry(countryLabel.text);
+  };
+
   return (
     <div ref={containerRef} className="w-full h-lvh">
       <Globe
@@ -122,7 +152,19 @@ export default function DayNightGlobe() {
         labelDotRadius={2}
         labelAltitude={0.01}
         globeOffset={[0, -100]}
+        onLabelClick={handleLabelClick}
+        arcsData={arcsData}
+        arcColor={["#FF0000", "#0000FF"]}
+        arcDashLength={0.5}
+        arcDashGap={0.2}
+        arcDashAnimateTime={2000}
       />
+      {selectedCountry && (
+        <div className="mt-4 p-4 bg-gray-800 text-white">
+          <h3>Details for {selectedCountry}</h3>
+          <p>Additional data can be displayed here.</p>
+        </div>
+      )}
     </div>
   );
 }
