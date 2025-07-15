@@ -120,22 +120,6 @@ export default function DayNightGlobe() {
     };
   }, []);
 
-  const handleLabelClick = (
-    label: object,
-    event: MouseEvent,
-    coords: { lat: number; lng: number; altitude: number }
-  ) => {
-    // Type assertion to access label properties
-    const countryLabel = label as {
-      id: number;
-      country: string;
-      lat: number;
-      lng: number;
-      text: string;
-    };
-    setSelectedCountry(countryLabel.text);
-  };
-
   return (
     <div ref={containerRef} className="w-full h-lvh">
       <Globe
@@ -152,7 +136,6 @@ export default function DayNightGlobe() {
         labelDotRadius={2}
         labelAltitude={0.01}
         globeOffset={[0, -100]}
-        onLabelClick={handleLabelClick}
         arcsData={arcsData}
         arcColor={["#FF0000", "#0000FF"]}
         arcDashLength={0.5}
