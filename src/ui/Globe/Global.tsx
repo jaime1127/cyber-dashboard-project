@@ -22,7 +22,6 @@ function debounce<T extends (...args: unknown[]) => void>(
 export default function DayNightGlobe() {
   const globeEl = useRef<GlobeMethods | undefined>(undefined);
   const [containerRef, { width, height }] = useContainerSize();
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
 
   const labelsData = useMemo(
     () => [
@@ -142,12 +141,6 @@ export default function DayNightGlobe() {
         arcDashGap={0.2}
         arcDashAnimateTime={2000}
       />
-      {selectedCountry && (
-        <div className="mt-4 p-4 bg-gray-800 text-white">
-          <h3>Details for {selectedCountry}</h3>
-          <p>Additional data can be displayed here.</p>
-        </div>
-      )}
     </div>
   );
 }
