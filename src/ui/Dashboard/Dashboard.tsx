@@ -13,6 +13,7 @@ import {
 
 import GlobeClientWrapper from "../Globe/GlobeWrapper";
 import Attack_By_Login from "../Attack_By_Login/AttackByLogin";
+import CountryDetails from "../Attack_By_Login/CountryDetails"
 import Link from "next/link";
 import Image from "next/image";
 
@@ -25,11 +26,14 @@ const navigation = [
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [country, setCountry] = useState<string | null>(null);
   const pathname = usePathname();
+
+ 
 
   return (
     <>
-      <main>
+      <main className="flex flex-col gap-4">
         {/* Mobile sidebar */}
         <Dialog
           open={sidebarOpen}
@@ -53,6 +57,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                       alt="Your Company"
                       src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
                       className="h-8 w-auto"
+                      onClick={() => setSidebarOpen(false)}
                       height={32}
                       width={32}
                     />
@@ -66,6 +71,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                     <XMarkIcon
                       aria-hidden="true"
                       className="size-6 text-white"
+                      onClick={() => setSidebarOpen(false)}
                     />
                   </button>
                 </div>
@@ -77,6 +83,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                           <li key={item.name}>
                             <Link
                               href={item.href}
+                              onClick={() => setSidebarOpen(false)}
                               className={
                                 (pathname === item.href
                                   ? "bg-gray-800 text-white"
@@ -160,7 +167,10 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
 
         {/* Right aside */}
         <aside className="xl:fixed xl:top-0 xl:right-0 xl:bottom-60 xl:w-96 overflow-y-auto lg:border-l lg:border-white/5 shadow-lg backdrop-blur-sm bg-white/10">
-          <Attack_By_Login />
+        {!country && (
+           <Attack_By_Login onClick={setCountry} />
+        )}
+        {country && <CountryDetails country={country} onClick={setCountry} />}
         </aside>
 
         {/* Bottom aside */}

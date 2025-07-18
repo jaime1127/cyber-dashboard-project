@@ -30,6 +30,20 @@ export async function getAttacksByCountry() {
   return data ?? [];
 }
 
+export async function getAttacksBySingleCountry(country: string) {
+  const { data, error } = await supabase
+    .from("attacks_by_country")
+    .select("*") // Select all columns
+    .eq("country", country); // Filter where the "country" column matches the input
+
+  if (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+
+  return data ?? [];
+}
+
 export async function getUserFailLogin() {
   const { data } = await supabase.from("user_fail_login").select("*");
   return data ?? [];

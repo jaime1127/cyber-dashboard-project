@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { getAttacksByCountry } from "../../app/lib/data";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { RU, IN, CN, PK, DE } from "country-flag-icons/react/3x2";
-import Link from "next/link";
 
 type AttackCountry = {
   country: string;
@@ -16,7 +15,11 @@ type StatsData = {
   attacks_by_country: AttackCountry[];
 };
 
-export default function Attack_By_Login() {
+interface attackByLoginProps {
+  onClick: (country: string) => void;
+}
+
+export default function Attack_By_Login({ onClick }: attackByLoginProps) {
   const [data, setData] = useState<StatsData | null>(null);
 
   useEffect(() => {
@@ -53,10 +56,7 @@ export default function Attack_By_Login() {
         date, and time. Use this data to spot global threat patterns and
         high-risk areas.
       </div>
-      <ul
-        role="list"
-        className="divide-y divide-gray-200"
-      >
+      <ul role="list" className="divide-y divide-gray-200">
         {data.attacks_by_country.map((data: AttackCountry) => {
           const FlagIcon = flagMap[data.country];
           return (
@@ -87,12 +87,14 @@ export default function Attack_By_Login() {
                     Time: {convertHourToDateOnly(data.hour)}
                   </div>
                 </div>
-                <Link
-                  href={data.country}
+
+                <button
+                  type="button"
                   className="rounded-full bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  onClick={() => onClick(data.country)}
                 >
                   View
-                </Link>
+                </button>
               </div>
             </li>
           );
